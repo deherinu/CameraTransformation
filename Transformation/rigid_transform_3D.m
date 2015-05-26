@@ -40,4 +40,35 @@ function [R,t] = rigid_transform_3D(A, B)
     
     %Hallar vector de translacion
     t = -R*centroid_A' + centroid_B'
+    
+    matriz=[R t];
+    matriz=[matriz; 0 0 0 1]
+        
+    punto1=[A(1,:)' ; 1];
+    nuevopunto1=(matriz*punto1)';
+    
+    punto2=[A(2,:)' ; 1];
+    nuevopunto2=(matriz*punto2)';
+    
+    punto3=[A(3,:)' ; 1];
+    nuevopunto3=(matriz*punto3)';
+    
+    A
+    nuevos_puntos=[nuevopunto1(1:3);nuevopunto2(1:3);nuevopunto3(1:3)]
+    
+    figure(3)
+    title('Puntos nuevos');
+    xlabel('Eje X')
+    ylabel('Eje Y')
+    zlabel('Eje Z')
+    hold on
+    %Sien Derecha
+    scatter3(nuevos_puntos(1,1),nuevos_puntos(1,2),nuevos_puntos(1,3),'+')
+    hold on
+    %Sien Izquierda
+    scatter3(nuevos_puntos(2,1),nuevos_puntos(2,2),nuevos_puntos(2,3),'d')
+    hold on
+    %Nasion
+    scatter3(nuevos_puntos(3,1),nuevos_puntos(3,2),nuevos_puntos(3,3),'*')
+    
 end
