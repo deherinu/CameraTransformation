@@ -1,23 +1,28 @@
 clear all
 clc
-%Paciente 429
+%Paciente 429 puntos calibrados
 
-tms_der=[0.6556835770606995, 1.3543931245803833, -0.9696885943412781];
-tms_izq=[0.6588612794876099, 1.3551398515701294, -0.9731546640396118];
-tms_nasion=[0.6581447720527649, 1.3553798198699951, -0.9700217843055725];
-%
-mri_der=[190,181,51];
-mri_izq=[67,188,51];
-mri_nasion=[130,223,72];
+tms_der=[0.72653299,  1.20570491, -0.98376202];
+tms_nasion=[0.68013382,  1.22208649, -0.91884435];
+tms_izq=[0.71504847,  1.20588661, -0.84919908];
+
+mri_der=[280 163 121];
+mri_nasion=[163 191 198];
+mri_izq=[41 167 117];
 
 %Ejemplo Unity
+
 % mri_der=[2.48 0.77 1.14];
 % mri_izq=[2.48 0.77 4.14];
 % mri_nasion=[2.48 3.77 1.14];
-%
+
+puntos_mri = [mri_der;mri_izq;mri_nasion]
+
 % tms_der=[-3.4862 -0.61529 1.3849];
 % tms_izq=[3.6062 0.49695 -1.1554];
 % tms_nasion=[-3.6062 6.4771 4.1554];
+
+puntos_tms_ = [tms_der;tms_izq; tms_nasion]
 
 %Distancias
 %Entre tms sienes
@@ -35,9 +40,9 @@ dist_mri_izq_nasion=norm(mri_izq-mri_nasion);
 dist_mri_der_nasion=norm(mri_der-mri_nasion);
 
 %Razones
-escala_sienes=(1/(dist_tms_sienes/dist_mri_sienes))
-escala_izq_nasion=(1/(dist_tms_izq_nasion/dist_mri_izq_nasion))
-escala_der_nasion=(1/(dist_tms_der_nasion/dist_mri_der_nasion))
+escala_sienes=(1/(dist_tms_sienes/dist_mri_sienes));
+escala_izq_nasion=(1/(dist_tms_izq_nasion/dist_mri_izq_nasion));
+escala_der_nasion=(1/(dist_tms_der_nasion/dist_mri_der_nasion));
 
 %Generar matriz de escalamiento
 diagonal=[escala_sienes escala_izq_nasion escala_der_nasion 1];

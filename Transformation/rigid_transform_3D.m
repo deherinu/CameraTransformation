@@ -9,7 +9,7 @@
 
 
 
-function [R,t] = rigid_transform_3D(A, B)
+function [R,t] = rigid_transform_3D(A, B, C)
     
     %Verificar que la cantidad de parametros de entrada sean correctos (Dos matrices de entrada en este caso)
     if nargin ~= 2
@@ -18,7 +18,7 @@ function [R,t] = rigid_transform_3D(A, B)
     
     %Verificar que los tamaños de las matrices sean iguales (La cantidad de puntos, Ej: dos matrices 3xN)
     %assert(size(A) == size(B))
-
+    
     %Calcula la media de los puntos ingresados
     centroid_A = mean(A);
     centroid_B = mean(B);
@@ -39,10 +39,10 @@ function [R,t] = rigid_transform_3D(A, B)
     end
     
     %Hallar vector de translacion
-    t = -R*centroid_A' + centroid_B'
+    t = -R*centroid_A' + centroid_B';
     
     matriz=[R t];
-    matriz=[matriz; 0 0 0 1]
+    matriz=[matriz; 0 0 0 1];
         
     punto1=[A(1,:)' ; 1];
     nuevopunto1=(matriz*punto1)';
@@ -53,8 +53,11 @@ function [R,t] = rigid_transform_3D(A, B)
     punto3=[A(3,:)' ; 1];
     nuevopunto3=(matriz*punto3)';
     
-    A
-    nuevos_puntos=[nuevopunto1(1:3);nuevopunto2(1:3);nuevopunto3(1:3)]
+    nuevopunto4=(matriz*C)';
+
+    nuevos_puntos=[nuevopunto1(1:3);nuevopunto2(1:3);nuevopunto3(1:3);nuevopunto4(1:4)];
+    
+    error_nuevos = [ abs(B(1,1)-nuevos_puntos(1,1)) abs(B(1,2)-nuevos_puntos(1,2)) abs(B(1,3)-nuevos_puntos(1,3)) ; abs(B(2,1)-nuevos_puntos(2,1)) abs(B(2,2)-nuevos_puntos(2,2)) abs(B(2,3)-nuevos_puntos(2,3)) ;abs(B(3,1)-nuevos_puntos(3,1)) abs(B(3,2)-nuevos_puntos(3,2)) abs(B(3,3)-nuevos_puntos(3,3)) ];
     
     figure(3)
     title('Puntos nuevos');
@@ -70,5 +73,7 @@ function [R,t] = rigid_transform_3D(A, B)
     hold on
     %Nasion
     scatter3(nuevos_puntos(3,1),nuevos_puntos(3,2),nuevos_puntos(3,3),'*')
+    %Vertex
+    scatter3(nuevos_puntos(4,1),nuevos_puntos(4,2),nuevos_puntos(4,3),'o')
     
 end
